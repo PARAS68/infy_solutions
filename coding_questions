@@ -1,0 +1,241 @@
+/*
+Your birthday is coming soon and one of your friends, Alex, is thinking about a gift for you.
+He knows that you really like integer arrays with interesting properties.
+He selected two numbers, N and K and decided to write down on paper all integer arrays of
+length K (in form a[1], a[2], …, a[K]), where every number a[i] is in range from 1 to N, and,
+moreover, a[i+1] is divisible by a[i] (where 1 < i <= K), and give you this paper as a
+birthday present.
+Alex is very patient, so he managed to do this. Now you’re wondering, how many different
+arrays are written down on this paper?
+Since the answer can be really large,
+
+#include <bits/stdc++.h>
+#define ll long long
+#define ld long double
+#define vll vector<ll>
+#define mp make_pair
+#define pb push_back
+#define pll pair<ll,ll>
+#define ff first
+#define ss second
+#define all(x) x.begin(), x.end()
+#define F(i,a,n) for(ll i=a;i<n;i++)
+#define fil(ar, val) memset(ar, val, sizeof(ar))
+using namespace std;
+ 
+const int mod = 1000000007;
+ 
+ 
+ 
+int main() {
+ 
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+ 
+    ll t;
+    t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        ll md=10000;
+        ll n,k;
+        cin>>n>>k;
+        ll dp[k+1][n+1];
+        memset(dp,0,sizeof(dp));
+        for(ll i=1;i<=n;i++)
+        {
+            dp[1][i]=1;
+        }
+        for(ll i=2;i<=k;i++)
+        {
+            for(ll j=1;j<=n;j++)
+            {
+                for(ll p=1;p<=sqrt(j);p++)
+                {
+                    if(j%p==0)
+                    {
+                        if(j/p!=p)
+                        {
+                            dp[i][j]=(dp[i][j]+dp[i-1][p])%md;
+                            dp[i][j]=(dp[i][j]+dp[i-1][j/p])%md;
+                        }
+                        else
+                        {
+                            dp[i][j]=(dp[i][j]+dp[i-1][p])%mod;
+                        }
+                    }
+                }
+            }
+        }
+        ll ans=0;
+        for(ll i=1;i<=n;i++)
+        {
+            ans=(ans+dp[k][i])%md;
+        }
+        cout<<ans<<"\n";
+        
+       
+    }
+ 
+ 
+    return 0;
+ 
+ 
+ 
+}
+#include<bits/stdc++.h>
+#include<stdlib.h>
+using namespace std;
+
+int count2(int n,int k)
+{
+int count=0;
+if(k==1)
+return n;
+
+else
+{
+
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(j%i==0)
+                count++;
+        }
+    }
+
+
+}
+return count;
+
+}
+
+int count1(int n,int k)
+{
+if(k==1)
+return n;
+
+  if(k==2)
+  {
+    return count2(n,k);
+  }
+
+    int mid=k/2;
+    int x=count1(n,k-mid);
+    int y=count2(n,mid);
+    return x+y-1;
+}
+
+int main(void)
+{
+int k,n;
+cin>>n;
+cin>>k;
+cout<<endl<<count1(n,k);
+
+return 0;
+}
+
+
+
+
+*/
+
+/*
+You have been given a string S of length N. The given string is a binary string which consists of only 0’s and ‘1’s. 
+Ugliness of a string is defined as the decimal number that this binary string represents.
+
+
+for(int i=0; i<n; i++)
+{
+    char c;
+    cin>>c;
+    str = str + c; 
+}
+cin>>cash>>a>>b;
+
+int count=0;
+
+while(count<=(cash-b) && b!=0)
+{
+    bool slug = 1;
+    
+    for(int i=0; i<n; i++)
+    {
+        if(str[i]=='1')
+        {
+            str[i] = '0';
+            slug=0;
+            break;
+        }
+    }
+    
+    count = count + b;
+    
+    if(slug==1)
+    {
+        break;
+    }
+}
+
+int count2 = cash - count;
+    
+int r = a;
+    
+while(r<=count2)
+{
+    bool slug2=1;
+        
+    for(int i=0; i<n; i++)
+    {
+        if(str[i]=='1' && str[i+1]=='0')
+        {
+            swap(str[i],str[i+1]);
+            slug2 = 0;
+            break;
+        }
+    }
+        
+    if(slug2==1)
+    {
+        break;
+    }
+        
+    r = r + a;
+}
+
+int num = stoi(str);
+int idx = 0,dec=0;
+
+while(num>0)
+{
+    int rem = num % 10;
+    dec = dec + rem*pow(2,idx);
+    num = num / 10; idx++;
+}
+cout<<dec<<endl;
+
+*/
+
+
+/*
+
+Khaled has an array A of N elements. It is guaranteed that N is even. He wants to choose at most N/2 elements from array A.
+It is not necessary to choose consecutive elements.
+Khaled is interested in XOR of all the elements he chooses. Here, XOR denotes the bitwise XOR operation.
+
+
+
+
+
+
+#include using namespace std; int main () { int n; cin >> n; int arr[n]; 
+for (int i = 0; i < n; i++) cin >> arr[i]; int M = 1 << 20; int dp[M]; char res[M]; for (int i = 1; i < M; i++) dp[i] = INT_MAX; 
+for (int i = 0; i < n; i++) { if (arr[i] == 0) continue;
+for (int j = 0; j < M; j++) res[j] = 0; 
+for (int k = 0; k < M; k++) { if (res[k] == 1) continue; if (dp[k] > dp[k ^ arr[i]]) dp[k] = dp[k ^ arr[i]] + 1; else if (dp[k ^ arr[i]] > dp[k]) dp[k ^ arr[i]] = dp[k] + 1; 
+res[k ^ arr[i]] = 1; } } int j = M - 1, k = n >> 1; while (dp[j] > k) j--; cout << j; return 0; }
+
+
+
+
